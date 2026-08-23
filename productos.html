@@ -31,52 +31,8 @@
             </a>
         </header>
 
-        <div class="row g-4">
-            <!-- SECCIÓN 1: FORMULARIO -->
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-white fw-bold">
-                        <i class="fa-solid fa-pen-to-square me-1 text-danger"></i>
-                        <span id="formTitle">Agregar Producto</span>
-                    </div>
-                    <div class="card-body">
-                        <form id="productoForm" novalidate>
-                            <input type="hidden" id="productoId">
-
-                            <div class="mb-3">
-                                <label for="codigo" class="form-label small fw-bold">Código de Barras</label>
-                                <input type="text" class="form-control" id="codigo" placeholder="Ej: PROD001" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label small fw-bold">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="nombre" placeholder="Ej: Labial Mate Rosa"
-                                    required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="precio" class="form-label small fw-bold">Precio de Venta ($)</label>
-                                <input type="number" class="form-control" id="precio" placeholder="25000" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="stock" class="form-label small fw-bold">Stock Inicial</label>
-                                <input type="number" class="form-control" id="stock" placeholder="10" required>
-                            </div>
-
-                            <button type="submit" id="btnGuardar" class="btn btn-rosa w-100">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Guardar Producto
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECCIÓN 2: COMPONENTE REACT (TABLA DE INVENTARIO) -->
-            <div class="col-md-8">
-                <div id="root-react"></div>
-            </div>
-        </div>
+        <!-- MÓDULO REACT COMPLETO (FORMULARIO Y TABLA) -->
+        <div id="root-react"></div>
     </div>
 
     <!-- Carga del Componente React -->
@@ -86,7 +42,7 @@
     <script>
         const rootElement = document.getElementById('root-react');
         const root = ReactDOM.createRoot(rootElement);
-        root.render(React.createElement(TablaProductos));
+        root.render(React.createElement(ModuloProductosPOS));
     </script>
 </body>
 
