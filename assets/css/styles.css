@@ -1,0 +1,94 @@
+/* ==========================================================================
+   VARIABLES GLOBALES (:root)
+   Definición de la paleta de colores institucional del proyecto Cosmeth Stylos
+   ========================================================================== */
+:root {
+  --color-rosa-suave: #ff6b8b; /* Color principal de marca para botones y acentos */
+  --color-rosa-hover: #e05574; /* Tono más oscuro al pasar el cursor (Hover) */
+  --color-gris-oscuro: #333333; /* Color de texto principal para contraste óptimo */
+  --color-fondo: #f8f9fa; /* Fondo gris muy claro para descanso visual */
+  --color-blanco: #ffffff; /* Fondo de contenedores y tarjetas */
+}
+
+/* ==========================================================================
+   ESTILOS GENERALES DEL CUERPO (body)
+   Centrado vertical y horizontal de la interfaz utilizando Flexbox
+   ========================================================================== */
+body {
+  background-color: var(--color-fondo);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  min-height: 100vh; /* Cubre el 100% del alto de la pantalla */
+  margin: 0;
+}
+
+/* ==========================================================================
+   TARJETA CONTENEDORA (login-card)
+   Aplica bordes redondeados, sombra suave y limites de ancho
+   ========================================================================== */
+.login-card {
+  background: var(--color-blanco);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* Sombra elegante */
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px; /* Limite de ancho para computadores */
+  border: 1px solid #e9ecef;
+}
+
+/* ==========================================================================
+   IDENTIDAD DE MARCA
+   ========================================================================== */
+.brand-title {
+  color: var(--color-gris-oscuro);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.brand-icon {
+  color: var(--color-rosa-suave);
+  font-size: 2.5rem;
+}
+
+/* ==========================================================================
+   BOTÓN PERSONALIZADO (btn-rosa)
+   Aplica los estilos de marca al botón de enviar con animaciones suaves
+   ========================================================================== */
+.btn-rosa {
+  background-color: var(--color-rosa-suave);
+  color: var(--color-blanco);
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 12px;
+  transition: all 0.3s ease; /* Transición suave para el efecto de movimiento */
+  border: none;
+}
+
+.btn-rosa:hover {
+  background-color: var(--color-rosa-hover);
+  color: var(--color-blanco);
+  transform: translateY(-2px); /* Ligera elevación al pasar el cursor */
+}
+
+/* ==========================================================================
+   FOCO DE FORMULARIOS
+   Resalta el borde del input con el color rosa institucional al seleccionar
+   ========================================================================== */
+.form-control:focus {
+  border-color: var(--color-rosa-suave);
+  box-shadow: 0 0 0 0.25rem rgba(255, 107, 139, 0.25);
+}
+
+/* ==========================================================================
+   ALERTA DE ERROR
+   Se define en 'display: none' para estar oculta inicialmente hasta que JS la active
+   ========================================================================== */
+.alert-error {
+  display: none; /* Oculto por defecto */
+  background-color: #f8d7da;
+  color: #842029;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
