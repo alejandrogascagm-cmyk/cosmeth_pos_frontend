@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoC IA - Predicción y Recomendador | Cosmeth Stylos POS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <div>
+                <h3 class="mb-0 text-dark">Cosmeth Stylos POS — Módulo Experimental IA (PoC)</h3>
+                <small class="text-muted">Analítica Predictiva de Reposición y Motor de Recomendación Cruzada</small>
+            </div>
+            <span class="badge bg-primary fs-6">GA8-220501096-AA2-EV04</span>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between">
+                        <span>Predicción de Agotamiento de Inventario (MySQL en vivo)</span>
+                        <button class="btn btn-sm btn-outline-light" onclick="cargarPredicciones()">Recalcular
+                            Modelo</button>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Producto</th>
+                                    <th>Stock</th>
+                                    <th>Días Est.</th>
+                                    <th>Riesgo IA</th>
+                                    <th>Acción Sugerida</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaPredicciones">
+                                <tr>
+                                    <td colspan="6" class="text-center">Cargando análisis predictivo...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-success">
+                    <div class="card-header bg-success text-white">
+                        Simulador de Recomendación en Caja
+                    </div>
+                    <div class="card-body">
+                        <label class="form-label fw-bold">Seleccione producto en carrito:</label>
+                        <select id="selectorProducto" class="form-select mb-3" onchange="mostrarRecomendacion()">
+                            <option value="">-- Seleccione --</option>
+                        </select>
+                        <div id="cajaRecomendacion" class="alert alert-info mb-0">
+                            Seleccione un producto del inventario para ver la recomendación de venta cruzada generada
+                            por el motor de asociación.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let datosGlobales = [];
+
+        async function cargarPredicciones() {
+            const resp = await fetch("poc_prediccion.php");
+            const data = await resp.json();
+            const tbody = document.getElementById("tablaPredicciones");
+            const selector = document.getElementById("selectorProducto");
+
+            tbody.innerHTML = "";
+            selector.innerHTML = '<option value="">-- Seleccione un cosmético --</option>';
+
+            if (data.status === "success") {
+                datosGlobales = data.predicciones;
+                datosGlobales.forEach((item, index) => {
+                    let badge = "bg-success";
+                    if (item.riesgo_ia === "CRÍTICO") badge = "bg-danger";
+                    else if (item.riesgo_ia === "MODERADO") badge = "bg-warning text-dark";
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${item.codigo}</strong></td>
+                            <td>${item.producto}</td>
+                            <td>${item.stock_actual} un.</td>
+                            <td><strong>${item.dias_para_agotarse} días</strong></td>
+                            <td><span class="badge ${badge}">${item.riesgo_ia}</span></td>
+                            <td><small>${item.accion_sugerida}</small></td>
+                        </tr>
+                    `;
+
+                    selector.innerHTML += `<option value="${index}">${item.producto} ($${item.precio.toLocaleString()})</option>`;
+                });
+            }
+        }
+
+        function mostrarRecomendacion() {
+            const idx = document.getElementById("selectorProducto").value;
+            const caja = document.getElementById("cajaRecomendacion");
+            if (idx === "") {
+                caja.className = "alert alert-info mb-0";
+                caja.innerHTML = "Seleccione un producto para obtener sugerencia.";
+                return;
+            }
+            const prod = datosGlobales[idx];
+            caja.className = "alert alert-success mb-0";
+            caja.innerHTML = `
+                <strong>Sugerencia IA para el cajero:</strong><br>
+                Ofrecer al cliente: <u>${prod.venta_cruzada}</u><br>
+                <small class="text-muted">Basado en reglas de asociación de compras frecuentes.</small>
+            `;
+        }
+
+        cargarPredicciones();
+    </script>
+</body>
+
+</html>
